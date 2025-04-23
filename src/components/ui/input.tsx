@@ -6,6 +6,7 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   return (
     <input
       placeholder="Search"
+      color="#71717A"
       type="search"
       data-slot="input"
       className={cn(
