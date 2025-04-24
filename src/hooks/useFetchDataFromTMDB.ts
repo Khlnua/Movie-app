@@ -1,8 +1,7 @@
 import useSWR from "swr";
-import { FetchMovieData } from "@/lib/fetch-movie-data";
+import { fetchMovieData } from "@/utils/fetch-movie-data";
 
 export const useFetchDataInClient = (endPoint: string) => {
-  const { data } = useSWR(endPoint, FetchMovieData);
-
+  const { data } = useSWR(endPoint, fetchMovieData);
   return { data };
 };

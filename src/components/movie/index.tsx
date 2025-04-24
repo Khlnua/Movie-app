@@ -1,6 +1,6 @@
 import { MovieImage } from "./MovieImage";
 import { MoviesList } from "./MoviesList";
-import { MoviesListCard } from "./MoviesListCard";
+import { MoviesListCard } from "./MoviesNowPlaying";
 
 export const Movie = () => {
   return (

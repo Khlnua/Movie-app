@@ -1,5 +1,10 @@
+import { AboutMovie } from "@/components/carousel/AboutMovie";
 const page = () => {
-  return <div></div>;
+  return (
+    <div>
+      <AboutMovie />
+    </div>
+  );
 };
 
 export default page;
