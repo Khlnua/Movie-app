@@ -22,11 +22,11 @@ export const AllMoviesGenres = () => {
       <DropdownMenuTrigger>
         <div className="flex rounded-md border border-[#E4E4E7] py-2 px-4 h-9 items-center">
           <ChevronDown />
-          <span className="font-medium text-[14px] text-[#18181B]">Genre</span>
+          <span className="font-medium text-[14px]">Genre</span>
         </div>
         <DropdownMenuContent
           align="start"
-          className="w-[335px] md:w-[577px] border border-[#E4E4E7] rounded-lg mt-1.5 p-5 bg-[#FFFFFF]  "
+          className="w-[335px] md:w-[577px] border border-none bg-white dark:bg-black rounded-lg mt-1.5 p-5  "
         >
           <div className="flex flex-col items-start w-[213px]  h-15">
             <p className="font-semibold text-2xl">Genres</p>

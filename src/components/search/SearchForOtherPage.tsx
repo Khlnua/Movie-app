@@ -14,8 +14,8 @@ export const SearchForOtherPage = () => {
   };
 
   return (
-    <div className="flex flex-1 md:flex-0 items-center gap-x-3 ">
-      <div className="items-center gap-x-3 hidden lg:flex">
+    <div className="flex flex-1 md:flex-0 items-center gap-x-3 relative ">
+      <div className="items-center gap-x-3 hidden lg:flex absolute z-30 md:left-[-220px]">
         <GenreHeader />
         <SearchInput />
       </div>

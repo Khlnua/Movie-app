@@ -1,33 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useTheme } from "next-themes";
 import { Moon, Sun } from "lucide-react";
 
 export const ThemeToggleButtons = () => {
-  // const [darkMode, setDarkMode] = useState(
-  //   () => localStorage.getItem("theme") === "dark"
-  // );
+  const { setTheme, resolvedTheme } = useTheme();
 
-  // useEffect(() => {
-  //   if (darkMode) {
-  //     document.documentElement.classList.add("dark");
-  //     localStorage.setItem("theme", "dark");
-  //   } else {
-  //     document.documentElement.classList.remove("dark");
-  //     localStorage.setItem("theme", "light");
-  //   }
-  // }, [darkMode]);
+  const isDarkMode = resolvedTheme === "dark";
+
+  const handleThemeChange = () => setTheme(isDarkMode ? "light" : "dark");
 
   return (
     <Button
-      className="rounded-md border shadow-xs border-[#E4E4E7]"
-      variant="outline"
+      className=" border border-[#E4E4E7] "
       size="icon"
-      // onClick={() => setDarkMode(!darkMode)}
+      onClick={handleThemeChange}
     >
-      <Moon />
-      {/* {darkMode ? <Moon /> : <Sun />} */}
+      {isDarkMode ? <Sun /> : <Moon />}
     </Button>
   );
 };

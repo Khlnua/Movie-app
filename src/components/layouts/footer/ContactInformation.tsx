@@ -2,16 +2,16 @@ import { Mail, Phone } from "lucide-react";
 
 export const ContactInformation = () => {
   return (
-    <div>
-      <p>Contact Information</p>
-      <div>
+    <div className="flex flex-col gap-3">
+      <p className="text-[#FAFAFA]/80">Contact Information</p>
+      <div className="flex gap-3 items-center">
         <Mail />
         <div>
           <p>Email:</p>
           <p>support@movieZ.com</p>
         </div>
       </div>
-      <div>
+      <div className="flex gap-3  items-center">
         <Phone />
         <div>
           <p> Phone:</p>
