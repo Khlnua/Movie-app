@@ -2,6 +2,7 @@
 import { useFetchDataInClient } from "@/hooks/useFetchDataFromTMDB";
 import {
   Carousel,
+  CarouselApi,
   CarouselContent,
   CarouselItem,
   CarouselNext,
@@ -9,6 +10,9 @@ import {
 } from "../ui/carousel";
 import { Play, Star } from "lucide-react";
 import { Button } from "../ui/button";
+import { useEffect, useState } from "react";
+import { Trailer } from "./Trailer";
+import { HomePageSkeleton } from "../skeletons/HomePageSkeleton";
 
 type Nowplaying = {
   adult: boolean;
@@ -27,15 +31,70 @@ type Nowplaying = {
   vote_count: number;
 };
 
-export const AboutMovie = () => {
+type VideoType = {
+  key: string;
+  site: string;
+  type: string;
+};
+
+export const NowPlayings = () => {
+  const [api, setApi] = useState<CarouselApi | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [trailerkey, setTrailerKey] = useState<string | null>(null);
   const { data } = useFetchDataInClient(
     "/movie/now_playing?language=en-US&page=1"
   );
   const movies: Nowplaying[] = data?.results ?? [];
 
+  useEffect(() => {
+    if (!api) return;
+
+    const onSelect = () => {
+      setSelectedIndex(api.selectedScrollSnap());
+    };
+    api.on("select", onSelect);
+    onSelect();
+
+    const interval = setInterval(() => {
+      api.scrollNext();
+    }, 3000);
+    return () => {
+      api.off("select", onSelect);
+      clearInterval(interval);
+    };
+  }, [api]);
+
+  const fetchTrailer = async (movieId: number) => {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/movie/${movieId}/videos?language=en-US`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.TMDB_TOKEN}`,
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    const trailer = data.results?.find(
+      (video: VideoType) => video.type === "Trailer" && video.site === "YouTube"
+    );
+
+    if (trailer) {
+      setTrailerKey(trailer.key);
+    } else {
+      alert("Trailer is not available");
+    }
+  };
+
+  if (movies.length == 0) {
+    return <HomePageSkeleton />;
+  }
+
   return (
     <div className="relative pt-3">
-      <Carousel>
+      <Carousel setApi={setApi} opts={{ loop: true }}>
         <CarouselContent>
           {movies
             .map((movie: Nowplaying) => (
@@ -67,7 +126,10 @@ export const AboutMovie = () => {
                   <p className=" text-sm font-normal  md:text-[#FAFAFA]">
                     {movie.overview}
                   </p>
-                  <Button className=" w-[145px] bg-[#18181B] text-[#FAFAFA] md:bg-[#FAFAFA] md:text-[#18181B] text-sm font-medium border border-none rounded-md py-2 px-4">
+                  <Button
+                    onClick={() => fetchTrailer(movie.id)}
+                    className=" w-[145px] bg-[#18181B] text-[#FAFAFA] md:bg-[#FAFAFA] md:text-[#18181B] text-sm font-medium border border-none rounded-md py-2 px-4"
+                  >
                     <Play />
                     Watch Trailer
                   </Button>
@@ -76,9 +138,10 @@ export const AboutMovie = () => {
             ))
             .slice(0, 20)}
         </CarouselContent>
-        <CarouselNext className="absolute right-4  border-none " />
-        <CarouselPrevious className="absolute left-4  border-none" />
+        <CarouselNext className="hidden md:flex absolute right-4  border-none  " />
+        <CarouselPrevious className="hidden md:flex absolute left-4  border-none" />
       </Carousel>
+      <Trailer trailerKey={trailerkey} setTrailerkey={setTrailerKey} />
     </div>
   );
 };

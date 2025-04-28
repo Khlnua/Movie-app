@@ -46,10 +46,10 @@ export const MoviesByListCategory = ({
         {movies.slice(0, 10).map((movie: any) => (
           <div
             key={movie.id}
-            className="h-90  md:h-110  bg-[#F4F4F5] dark:bg-[#27272A] rounded-lg"
+            className=" bg-[#F4F4F5] dark:bg-[#27272A] rounded-lg"
           >
             <img
-              className="rounded-t-lg cursor-pointer hover:opacity-70 "
+              className="rounded-t-lg cursor-pointer h-80  md:h-100 w-full hover:opacity-70 "
               src={`http://image.tmdb.org/t/p/original/${movie.poster_path}`}
               alt={movie.title}
             />

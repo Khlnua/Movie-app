@@ -1,13 +1,13 @@
 import { MovieImage } from "./MovieImage";
 import { MoviesList } from "./MoviesList";
-import { MoviesListCard } from "./MoviesNowPlaying";
+import { MoviesDetailPage } from "./MoviesDetailPage";
 
 export const Movie = () => {
   return (
     <div>
       <MovieImage />
       <MoviesList />
-      <MoviesListCard />
+      <MoviesDetailPage />
     </div>
   );
 };
