@@ -1,5 +1,7 @@
-const SearchPage = () => {
-  return <div> search shuuu</div>;
+import React from "react";
+
+const page = () => {
+  return <div>page</div>;
 };
 
-export default SearchPage;
+export default page;

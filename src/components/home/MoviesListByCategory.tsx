@@ -2,7 +2,6 @@
 import { useFetchDataInClient } from "@/hooks/useFetchDataFromTMDB";
 import { ArrowRight, MoveRight, Star } from "lucide-react";
 import { Button } from "../ui/button";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 type MoviesByListCategoryProps = {
@@ -34,11 +33,7 @@ export const MoviesByListCategory = ({
   );
   const movies: MovieData[] = data?.results ?? [];
 
-  const { push } = useRouter();
-
-  const handleGotoDetails = (movieId: string) => {
-    push(`/detail/${movieId}`);
-  };
+  const router = useRouter();
 
   return (
     <div className="flex flex-col px-5 md:px-20">
@@ -54,7 +49,7 @@ export const MoviesByListCategory = ({
         {movies.slice(0, 10).map((movie: any) => (
           <div
             key={movie.id}
-            // onClick={handleGotoDetails()}
+            onClick={() => router.push(`/detail/${movie.id}`)}
             className=" bg-[#F4F4F5] dark:bg-[#27272A] rounded-lg"
           >
             <img

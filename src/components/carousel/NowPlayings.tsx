@@ -106,6 +106,7 @@ export const NowPlayings = () => {
                 alt={movie.title}
                 className=" absolute w-full  h-60 md:h-165 object-cover"
               />
+
               <div className="absolute z-1 top-60 md:top-40 md:pl-20  w-full md:w-101 flex justify-between flex-col p-5 gap-4">
                 <div className="  md:text-[#FFFFFF] flex justify-between items-center md:flex-col md:items-start">
                   <div>
@@ -139,6 +140,21 @@ export const NowPlayings = () => {
         <CarouselNext className="hidden md:flex absolute right-4  border-none  " />
         <CarouselPrevious className="hidden md:flex absolute left-4  border-none" />
       </Carousel>
+      <div className="absolute z-100 top-60 md:top-160 left-0 right-0 flex justify-center gap-2">
+        {movies.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => {
+              api?.scrollTo(index);
+            }}
+            className={`w-1 h-1 md:w-3 md:h-3 rounded-full transition-all duration-300 ${
+              index === selectedIndex
+                ? "bg-white scale-155 shadow-lg "
+                : "bg-gray-500 opacity-60"
+            }`}
+          ></button>
+        ))}
+      </div>
       <Trailer trailerKey={trailerkey} setTrailerkey={setTrailerKey} />
     </div>
   );
