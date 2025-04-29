@@ -1,10 +1,10 @@
-import { GenreHeader } from "../genre/GenreHeader";
 import { SearchInput } from "./SearchInput";
 import { AnimatePresence, motion } from "framer-motion";
 import { searchBarAnimationVariants } from "@/constants/search-bar-animation";
 import { useState } from "react";
 import { Search, X } from "lucide-react";
 import { Button } from "../ui/button";
+import { AllMoviesGenres } from "../genre/AllMoviesGenres";
 
 export const SearchForOtherPage = () => {
   const [showSearchBarMobile, setShowSearchBarMobile] = useState(false);
@@ -14,9 +14,9 @@ export const SearchForOtherPage = () => {
   };
 
   return (
-    <div className="flex flex-1 md:flex-0 items-center gap-x-3 relative ">
-      <div className="items-center gap-x-3 hidden lg:flex absolute z-30 md:left-[-220px]">
-        <GenreHeader />
+    <div className="flex flex-1 md:flex-0 items-center gap-x-3">
+      <div className="items-center gap-x-3 hidden lg:flex  ">
+        <AllMoviesGenres />
         <SearchInput />
       </div>
 
@@ -34,12 +34,10 @@ export const SearchForOtherPage = () => {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="absolute inset-x-0 flex md:hidden px-5 py-[7.5px] justify-between bg-white
-             "
+            className="absolute inset-x-0 flex md:hidden px-5 py-[7.5px] justify-between bg-white dark:bg-black"
           >
-            <GenreHeader />
+            <AllMoviesGenres />
             <SearchInput />
-
             <Button
               onClick={handleSearchButton}
               className="rounded-md shadow-xs border border-[#E4E4E7]"

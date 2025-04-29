@@ -2,6 +2,8 @@
 import { useFetchDataInClient } from "@/hooks/useFetchDataFromTMDB";
 import { ArrowRight, MoveRight, Star } from "lucide-react";
 import { Button } from "../ui/button";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type MoviesByListCategoryProps = {
   movieType: "upcoming" | "popular" | "top_rated";
@@ -32,6 +34,12 @@ export const MoviesByListCategory = ({
   );
   const movies: MovieData[] = data?.results ?? [];
 
+  const { push } = useRouter();
+
+  const handleGotoDetails = (movieId: string) => {
+    push(`/detail/${movieId}`);
+  };
+
   return (
     <div className="flex flex-col px-5 md:px-20">
       <div className="flex justify-between items-center">
@@ -46,6 +54,7 @@ export const MoviesByListCategory = ({
         {movies.slice(0, 10).map((movie: any) => (
           <div
             key={movie.id}
+            // onClick={handleGotoDetails()}
             className=" bg-[#F4F4F5] dark:bg-[#27272A] rounded-lg"
           >
             <img
@@ -55,7 +64,7 @@ export const MoviesByListCategory = ({
             />
             <div className="  py-4 pl-3 ">
               <div className="flex ">
-                <Star className="text-amber-300 dark:text-[#F4F4F5]" />
+                <Star className="text-[#FDE047] fill-[#FDE047] dark:text-[#F4F4F5] dark:fill-[#F4F4F5]" />
                 <span className="font-semibold">
                   {movie.vote_average.toFixed(1)}
                   <span className="font-normal text-gray-400">/10</span>

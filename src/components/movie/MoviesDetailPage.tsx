@@ -12,8 +12,9 @@ import { Play, Star } from "lucide-react";
 import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
 import { Trailer } from "../carousel/Trailer";
+import { HomePageSkeleton } from "../skeletons/HomePageSkeleton";
 
-type MovieCardData = {
+type Nowplaying = {
   adult: boolean;
   backdrop_path: string;
   genre_ids: number[];
@@ -29,21 +30,24 @@ type MovieCardData = {
   vote_average: number;
   vote_count: number;
 };
+
 type VideoType = {
   key: string;
   site: string;
   type: string;
 };
 
-export const MoviesDetailPage = () => {
+export const Dataaaaa = () => {
   const [api, setApi] = useState<CarouselApi | null>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [trailerkey, setTrailerKey] = useState<string | null>(null);
   const { data } = useFetchDataInClient(
     "/movie/now_playing?language=en-US&page=1"
   );
-  const movies: MovieCardData[] = data?.results ?? [];
-  console.log(movies);
+
+  console.log("sdgsdgs", data);
+
+  const movies: Nowplaying[] = data?.results ?? [];
 
   useEffect(() => {
     if (!api) return;
@@ -65,7 +69,8 @@ export const MoviesDetailPage = () => {
 
   const fetchTrailer = async (movieId: number) => {
     const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${movieId}/videos?language=en-US`,
+      `https://api.themoviedb.org/3/movie/${movieId}/videos?/language=en-US`,
+
       {
         headers: {
           "Content-Type": "application/json",
@@ -75,6 +80,8 @@ export const MoviesDetailPage = () => {
     );
 
     const data = await response.json();
+
+    console.log(data, "jashcXc");
 
     const trailer = data.results?.find(
       (video: VideoType) => video.type === "Trailer" && video.site === "YouTube"
@@ -87,71 +94,58 @@ export const MoviesDetailPage = () => {
     }
   };
 
+  if (movies.length == 0) {
+    return <HomePageSkeleton />;
+  }
+
   return (
-    <div>
+    <div className="relative pt-3">
       <Carousel setApi={setApi} opts={{ loop: true }}>
-        <div className="">
-          <CarouselContent>
-            {movies
-              .map((movie: MovieCardData) => (
-                <CarouselItem key={movie.id}>
-                  <div className="flex justify-around">
-                    <div>
-                      <p>{movie.title}</p>
-                      <p>{movie.release_date}</p>
-                    </div>
-                    <div>
-                      <p>Rating</p>
-                      <div className="flex gap-1">
-                        <Star className="text-[#FDE047]  size-6" />
-                        <p className="text-[16px] font-semibold">
-                          {movie.vote_average.toFixed(1)}
-                        </p>
-                        <span className="text-16px font-normal text-gray-500">
-                          /10
-                        </span>
-                      </div>
-                      <p>{movie.vote_count}</p>
-                    </div>
+        <CarouselContent>
+          {movies.slice(0, 10).map((movie: Nowplaying) => (
+            <CarouselItem
+              key={movie.id}
+              className="w-full h-[510px] md:h-165 flex shrink-0"
+            >
+              <img
+                src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
+                alt={movie.title}
+                className=" absolute w-full  h-60 md:h-165 object-cover"
+              />
+              <div className="absolute z-1 top-60 md:top-40 md:pl-20  w-full md:w-101 flex justify-between flex-col p-5 gap-4">
+                <div className="  md:text-[#FFFFFF] flex justify-between items-center md:flex-col md:items-start">
+                  <div>
+                    <p className="font-normal text-[16px] ">Now Playing:</p>
+                    <h2 className=" text-lg font-semibold">{movie.title}</h2>
                   </div>
-
-                  <div className="flex justity-around gap-8">
-                    <img
-                      src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-                      alt={movie.title}
-                      className="w-72 h-104"
-                    />
-
-                    <div className=" w-190 h-107 flex justify-between shrink-0 relative">
-                      <img
-                        src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
-                        alt={movie.title}
-                        className=" absolute w-190  h-107 "
-                      />
-                      <div className="absolute top-90 left-15 z-1 flex gap-1.5 items-center">
-                        <Button
-                          onClick={() => fetchTrailer(movie.id)}
-                          className="  bg-[#18181B]  md:bg-[#FAFAFA]  border border-none rounded-full "
-                        >
-                          <Play />
-                        </Button>
-                        <p className="text-[#FAFAFA] font-medium  text-sm ">
-                          Play Trailer
-                        </p>
-                      </div>
-                    </div>
+                  <div className="flex gap-1">
+                    <Star className="fill-[#FDE047] text-[#FDE047]  size-6" />
+                    <p className="text-[16px] font-semibold">
+                      {movie.vote_average.toFixed(1)}
+                    </p>
+                    <span className="text-16px font-normal text-gray-500">
+                      /10
+                    </span>
                   </div>
-
-                  <div>{movie.genre_ids}</div>
-                </CarouselItem>
-              ))
-              .slice(0, 1)}
-          </CarouselContent>
-          <CarouselNext className="hidden md:flex absolute right-4  border-none  " />
-          <CarouselPrevious className="hidden md:flex absolute left-4  border-none" />
-          <Trailer trailerKey={trailerkey} setTrailerkey={setTrailerKey} />
-        </div>
+                </div>
+                <p className=" text-sm font-normal  md:text-[#FAFAFA]">
+                  {movie.overview}
+                </p>
+                <Button
+                  onClick={() => fetchTrailer(movie.id)}
+                  className=" w-[145px] bg-[#18181B] text-[#FAFAFA] md:bg-[#FAFAFA] md:text-[#18181B] text-sm font-medium border border-none rounded-md py-2 px-4"
+                >
+                  <Play />
+                  Watch Trailer
+                </Button>
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselNext className="hidden md:flex absolute right-4  border-none  " />
+        <CarouselPrevious className="hidden md:flex absolute left-4  border-none" />
       </Carousel>
+      <Trailer trailerKey={trailerkey} setTrailerkey={setTrailerKey} />
     </div>
   );
 };
