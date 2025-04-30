@@ -1,6 +1,6 @@
 "use client";
 import { useFetchDataInClient } from "@/hooks/useFetchDataFromTMDB";
-import { ArrowRight, MoveRight, Star } from "lucide-react";
+import { ArrowRight, Star } from "lucide-react";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 

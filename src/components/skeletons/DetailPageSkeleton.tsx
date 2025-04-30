@@ -76,7 +76,22 @@ export const DetailPageSkeleton = () => {
           <Skeleton className="w-120 h-7 bg-[#F4F4F5] dark:bg-[#27272A] mb-4 pt-5 " />
         </div>
       </div>
-      <Skeleton className="w-210 h-7 bg-[#F4F4F5] dark:bg-[#27272A] mb-4 pt-5 " />
+      <Skeleton className="md:w-210 h-7 bg-[#F4F4F5] dark:bg-[#27272A] mb-4 pt-5 " />
+
+      <div className="flex flex-col gap-2.5">
+        <div className="flex gap-3">
+          <Skeleton className="w:10 md:w-40 h-7  bg-[#F4F4F5] dark:bg-[#27272A] " />
+          <Skeleton className="w:30 md:w-100 h-7  bg-[#F4F4F5] dark:bg-[#27272A] " />
+        </div>
+        <div className="flex gap-3">
+          <Skeleton className="w:10 md:w-40 h-7  bg-[#F4F4F5] dark:bg-[#27272A] " />
+          <Skeleton className="w:30 md:w-100 h-7  bg-[#F4F4F5] dark:bg-[#27272A] " />
+        </div>
+        <div className="flex gap-3">
+          <Skeleton className="w:10 md:w-40 h-7  bg-[#F4F4F5] dark:bg-[#27272A] " />
+          <Skeleton className="w:30 md:w-100 h-7  bg-[#F4F4F5] dark:bg-[#27272A] " />
+        </div>
+      </div>
     </div>
   );
 };

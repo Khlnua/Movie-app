@@ -17,7 +17,7 @@ export const useURLSearchParams = () => {
 
     const newParams = queryParams.toString();
 
-    return `?${newParams}`;
+    return `/genres?${newParams}`;
   };
 
   return { selectedGenreIds, generateQueryParams };

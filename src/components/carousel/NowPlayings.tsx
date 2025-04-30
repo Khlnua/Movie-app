@@ -41,7 +41,7 @@ export const NowPlayings = () => {
   const [api, setApi] = useState<CarouselApi | null>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [trailerkey, setTrailerKey] = useState<string | null>(null);
-  const { data } = useFetchDataInClient(
+  const { isLoading, data } = useFetchDataInClient(
     "/movie/now_playing?language=en-US&page=1"
   );
   const movies: Nowplaying[] = data?.results ?? [];
@@ -88,7 +88,7 @@ export const NowPlayings = () => {
     }
   };
 
-  if (movies.length == 0) {
+  if (isLoading) {
     return <HomePageSkeleton />;
   }
 

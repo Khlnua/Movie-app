@@ -4,7 +4,7 @@ import { useFetchDataInClient } from "@/hooks/useFetchDataFromTMDB";
 import Image from "next/image";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Dot, Play, PlayCircle, Star } from "lucide-react";
+import { Dot, Play, Star } from "lucide-react";
 import { Trailer } from "@/components/carousel/Trailer";
 import { DetailPageSkeleton } from "@/components/skeletons/DetailPageSkeleton";
 
@@ -17,7 +17,7 @@ type MovieDetailType = {
   poster_path: string;
   release_date: string;
   vote_average: number;
-  vote_count: number;
+  popularity: number;
   genres: { id: number; name: string }[];
 };
 
@@ -30,6 +30,30 @@ type VideoType = {
 export default function MovieDetailPage() {
   const [trailerkey, setTrailerKey] = useState<string | null>(null);
 
+  const params = useParams();
+  const movieId = params?.movieId;
+
+  const { data: crewData } = useFetchDataInClient(
+    `/movie/${movieId}/credits?language=en-US`
+  );
+  console.log(crewData);
+
+  const director = crewData?.crew?.find(
+    (crewMember: any) => crewMember.job === "Director"
+  );
+  const directordata = director?.name || "Unknown";
+
+  const writer = crewData?.crew?.filter((crewMember: any) =>
+    ["Writer", "Screenplay", "Story"].includes(crewMember.job)
+  );
+  const writersdata =
+    writer?.slice(0, 3).map((writer: any) => writer.name) || [];
+
+  const actors = crewData?.cast?.slice(0, 5) || [];
+  const actorsdata = actors.map((actor: any) => ({
+    name: actor.name,
+  }));
+
   const fetchTrailer = async (movieId: number) => {
     const response = await fetch(
       `https://api.themoviedb.org/3/movie/${movieId}/videos?language=en-US`,
@@ -40,13 +64,10 @@ export default function MovieDetailPage() {
         },
       }
     );
-
     const data = await response.json();
-
     const trailer = data.results?.find(
       (video: VideoType) => video.type === "Trailer" && video.site === "YouTube"
     );
-
     if (trailer) {
       setTrailerKey(trailer.key);
     } else {
@@ -54,23 +75,17 @@ export default function MovieDetailPage() {
     }
   };
 
-  const params = useParams();
-  const movieId = params?.movieId;
-
-  if (!movieId) return <div className="p-10">Invalid movie ID</div>;
-
-  const { data, isLoading } = useFetchDataInClient(
+  const { data: dataDetail, isLoading: loadingDetail } = useFetchDataInClient(
     `/movie/${movieId}?language=en-US`
   );
-  const movie = data as MovieDetailType;
+  const movie = dataDetail as MovieDetailType;
 
-  if (isLoading)
+  if (loadingDetail)
     return (
       <div className="p-10">
         <DetailPageSkeleton />
       </div>
     );
-  if (!movie) return <div className="p-10">Error loading movie.</div>;
 
   return (
     <div className="md:px-40 py-20">
@@ -93,7 +108,7 @@ export default function MovieDetailPage() {
                 {movie.vote_average.toFixed(1)}
                 <span className="text-16px font-normal text-gray-500">/10</span>
               </p>
-              <p>{movie.vote_count}</p>
+              <p>{movie.popularity.toFixed(0)}k</p>
             </div>
           </div>
         </div>
@@ -190,6 +205,32 @@ export default function MovieDetailPage() {
             <p className="text-[16px] font-normal mb-4">{movie.overview}</p>
           </div>
         </div>
+      </div>
+
+      <div className="flex flex-col gap-5 px-5 ">
+        <div className="flex gap-1.5 md:gap-3">
+          <div className="font-bold text-[16px] w-16 h-7">Director</div>
+          <p>{directordata || "Unknown"}</p>
+        </div>
+        <hr className="text-[#E4E4E7]" />
+
+        <div className="flex gap-1 md:gap-3">
+          <div className="font-bold text-[16px] w-16 h-7">Writers</div>
+          <p>{writersdata.length > 0 ? writersdata.join(", ") : "Unknown"}</p>
+        </div>
+        <hr className="text-[#E4E4E7]" />
+
+        <div className="flex gap-1 md:gap-3">
+          <div className="font-bold text-[16px] w-16 h-7">Stars</div>
+          <div className="flex">
+            {actorsdata.length > 0 ? (
+              <p>{actorsdata.map((actor: any) => actor.name).join(", ")}</p>
+            ) : (
+              <p>No actors available</p>
+            )}
+          </div>
+        </div>
+        <hr className="text-[#E4E4E7]" />
       </div>
     </div>
   );

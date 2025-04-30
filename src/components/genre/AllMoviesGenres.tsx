@@ -19,12 +19,12 @@ type GenreTypes = {
 };
 
 export const AllMoviesGenres = () => {
-  const { push } = useRouter();
+  const router = useRouter();
   const { selectedGenreIds, generateQueryParams } = useURLSearchParams();
 
   const handleGenreSelection = (genreId: string) => () => {
     const newPath = generateQueryParams(genreId);
-    push(newPath);
+    router.push(newPath);
   };
 
   const { isLoading, data } = useFetchDataInClient(
