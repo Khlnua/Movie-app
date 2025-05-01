@@ -41,7 +41,7 @@ export const MoviesByGenre = () => {
   );
   const genres: GenreTypes[] = dataGenres?.genres ?? [];
 
-  const { isLoading: MovieLoad, data: dataMovies } = useFetchDataInClient(
+  const { data: dataMovies } = useFetchDataInClient(
     `/discover/movie?language=en&with_genres=${selectedGenreIds}&page=1`
   );
 

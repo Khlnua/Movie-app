@@ -39,7 +39,7 @@ export const MoviesByListCategory = ({
     <div className="flex flex-col px-5 md:px-20">
       <div className="flex justify-between items-center">
         <h1 className="text-lg py-9 font-extrabold">
-          {movieType.charAt(0).toUpperCase() + movieType.slice(1)}{" "}
+          {movieType.charAt(0).toUpperCase() + movieType.slice(1)}
         </h1>
         <Button className="font-medium text-sm">
           See more <ArrowRight />
