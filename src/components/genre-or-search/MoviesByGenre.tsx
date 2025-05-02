@@ -58,7 +58,7 @@ export const MoviesByGenre = () => {
   const router = useRouter();
 
   return (
-    <div className="md:px-10">
+    <div className="md:px-10 pt-15">
       <p className="font-semibold text-3xl px-5 pt-5">Search filter</p>
       <div className="md:flex">
         <div className="w-[335px] md:w-[352px] border border-none rounded-lg mt-1.5 p-5">

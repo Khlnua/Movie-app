@@ -148,7 +148,7 @@ export default function MovieDetailPage() {
               {movie.genres?.map((genre) => (
                 <span
                   key={genre.id}
-                  className="font-semibold border border-[#E4E4E7] rounded-full text-sm px-2.5 py-0.5 gap-2.5 h-8"
+                  className="flex items-center font-semibold text-sm gap-0.5 py-0.5 pr-1 pl-2 border rounded-full cursor-pointer border-[#E4E4E7]"
                 >
                   {genre.name}
                 </span>

@@ -1,7 +1,7 @@
 "use client";
 import { ArrowRight, Search, Star } from "lucide-react";
 import { Input } from "../ui/input";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useFetchDataInClient } from "@/hooks/useFetchDataFromTMDB";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
@@ -21,6 +21,25 @@ export const SearchInput = () => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [moviesResult, setMoviesResult] = useState<any[]>([]);
 
+  const searchResultRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const handleRefClick = (event: MouseEvent) => {
+      if (
+        searchResultRef.current &&
+        !searchResultRef.current.contains(event.target as Node)
+      ) {
+        setSearchValue("");
+      }
+    };
+
+    window.addEventListener("mousedown", handleRefClick);
+
+    return () => {
+      window.removeEventListener("mousedown", handleRefClick);
+    };
+  }, []);
+
   const { data } = useFetchDataInClient(
     `/search/movie?query=${searchValue}&language=en-US&page=1`
   );
@@ -38,6 +57,11 @@ export const SearchInput = () => {
     setMoviesResult(findMovies);
   };
 
+  const onClickFoundMovie = (movieId: string) => () => {
+    setSearchValue("");
+    router.push(`/detail/${movieId}`);
+  };
+
   return (
     <div className="flex flex-col relative">
       <div className="shadow-xs flex items-center px-3 gap-[10px] h-9 md:border rounded-lg border-[#E4E4E7] ">
@@ -50,11 +74,14 @@ export const SearchInput = () => {
       </div>
 
       {searchValue && Boolean(movies.length) && (
-        <div className="absolute z-110 top-10 -left-15  bg-[#F4F4F5] dark:bg-[#27272A] w-[335px] md:w-[577px] md:left-[-150px] p-3 rounded-lg">
+        <div
+          ref={searchResultRef}
+          className="absolute z-110 top-10 -left-15  bg-[#F4F4F5] dark:bg-[#27272A] w-[335px] md:w-[577px] md:left-[-150px] p-3 rounded-lg"
+        >
           <ul className="flex flex-col gap-3 md:w-[553px] items-start">
             {movies.slice(0, 5).map((movie: any, index: any) => (
               <li
-                onClick={() => router.push(`/detail/${movie.id}`)}
+                onClick={onClickFoundMovie(movie.id)}
                 className="flex justify-center cursor-pointer hover:bg-gray-200 hover:dark:bg-slate-900 transition duration-300 rounded-sm py-1"
                 key={index}
               >
@@ -104,7 +131,9 @@ export const SearchInput = () => {
           </ul>
           <Button>
             See all results for{" "}
-            <span className="font-semibold">"{searchValue}"</span>
+            <span className="font-semibold">
+              "{searchValue.toLocaleUpperCase()}"
+            </span>
           </Button>
         </div>
       )}

@@ -8,17 +8,20 @@ import { SearchForOtherPage } from "@/components/search/SearchForOtherPage";
 
 export const HeaderContainer = () => {
   const pathname = usePathname();
+
   return (
-    <div className="flex items-center md:justify-between py-[7.5px] md:py-[11.5px] px-5 md:px-20 relative">
-      <MovieZLogo />
+    <div className="fixed z-10 bg-white dark:bg-black w-full">
+      <div className="flex items-center md:justify-between py-[7.5px] md:py-[11.5px] px-5 md:px-20 relative">
+        <MovieZLogo />
 
-      {pathname === "./search" ? (
-        <SearchForSearchPage />
-      ) : (
-        <SearchForOtherPage />
-      )}
+        {pathname === "./search" ? (
+          <SearchForSearchPage />
+        ) : (
+          <SearchForOtherPage />
+        )}
 
-      <ThemeToggleButtons />
+        <ThemeToggleButtons />
+      </div>
     </div>
   );
 };

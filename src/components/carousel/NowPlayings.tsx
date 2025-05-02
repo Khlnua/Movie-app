@@ -93,7 +93,7 @@ export const NowPlayings = () => {
   }
 
   return (
-    <div className="relative pt-3">
+    <div className="relative pt-15">
       <Carousel setApi={setApi} opts={{ loop: true }}>
         <CarouselContent>
           {movies.slice(0, 10).map((movie: Nowplaying) => (
