@@ -140,7 +140,7 @@ export const NowPlayings = () => {
         <CarouselNext className="hidden md:flex absolute right-4  border-none  " />
         <CarouselPrevious className="hidden md:flex absolute left-4  border-none" />
       </Carousel>
-      <div className="absolute z-100 top-60 md:top-160 left-0 right-0 flex justify-center gap-2">
+      <div className="absolute z-1 top-60 md:top-160 left-0 right-0 flex justify-center gap-2">
         {movies.map((_, index) => (
           <button
             key={index}

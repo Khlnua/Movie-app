@@ -88,7 +88,7 @@ export default function MovieDetailPage() {
     );
 
   return (
-    <div className="md:px-40 py-20">
+    <div className="md:px-40 py-20 min-h-screen">
       <div className="flex justify-between px-4 md:px-20">
         <div>
           <h1 className="text-2xl md:text-4xl font-semibold md:font-bold mb-2">

@@ -2,7 +2,7 @@ import { MoviesByGenre } from "@/components/genre-or-search/MoviesByGenre";
 
 const SearchGenrePage = () => {
   return (
-    <div>
+    <div className="min-h-screen">
       <MoviesByGenre />
     </div>
   );

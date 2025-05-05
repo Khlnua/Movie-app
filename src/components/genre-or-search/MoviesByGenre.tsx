@@ -4,7 +4,8 @@ import { useFetchDataInClient } from "@/hooks/useFetchDataFromTMDB";
 import { useURLSearchParams } from "@/hooks/useURLSearchParams";
 import { cn } from "@/lib/utils";
 import { ChevronRight, Star, X } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { DynamicPagination } from "../common";
 
 type GenreTypes = {
   id: number;
@@ -28,6 +29,9 @@ type MovieData = {
 };
 
 export const MoviesByGenre = () => {
+  const searchParams = useSearchParams();
+  const page = searchParams.get("page") ?? 1;
+
   const { push } = useRouter();
   const { selectedGenreIds, generateQueryParams } = useURLSearchParams();
 
@@ -42,10 +46,10 @@ export const MoviesByGenre = () => {
   const genres: GenreTypes[] = dataGenres?.genres ?? [];
 
   const { data: dataMovies } = useFetchDataInClient(
-    `/discover/movie?language=en&with_genres=${selectedGenreIds}&page=1`
+    `/discover/movie?language=en&with_genres=${selectedGenreIds}&page=${page}`
   );
-
   const movies: MovieData[] = dataMovies?.results ?? [];
+  const totalPage = dataMovies?.total_pages;
 
   if (genreLoad) {
     return <GenresLoading />;
@@ -119,6 +123,9 @@ export const MoviesByGenre = () => {
                 </div>
               </div>
             ))}
+          </div>
+          <div className="pt-10 ">
+            <DynamicPagination totalPage={Number(totalPage)} />
           </div>
         </div>
       </div>

@@ -41,7 +41,10 @@ export const MoviesByListCategory = ({
         <h1 className="text-lg py-9 font-extrabold">
           {movieType.charAt(0).toUpperCase() + movieType.slice(1)}
         </h1>
-        <Button className="font-medium text-sm">
+        <Button
+          onClick={() => router.push(`/typesofmovies?movieType=${movieType}`)}
+          className="font-medium text-sm"
+        >
           See more <ArrowRight />
         </Button>
       </div>
