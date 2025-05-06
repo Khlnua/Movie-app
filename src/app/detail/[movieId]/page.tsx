@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Dot, Play, Star } from "lucide-react";
 import { Trailer } from "@/components/carousel/Trailer";
 import { DetailPageSkeleton } from "@/components/skeletons/DetailPageSkeleton";
+import { MoreLike } from "@/components/genre-or-search/MoreLike";
 
 type MovieDetailType = {
   id: number;
@@ -36,7 +37,6 @@ export default function MovieDetailPage() {
   const { data: crewData } = useFetchDataInClient(
     `/movie/${movieId}/credits?language=en-US`
   );
-  console.log(crewData);
 
   const director = crewData?.crew?.find(
     (crewMember: any) => crewMember.job === "Director"
@@ -78,7 +78,6 @@ export default function MovieDetailPage() {
   const { data: dataDetail, isLoading: loadingDetail } = useFetchDataInClient(
     `/movie/${movieId}?language=en-US`
   );
-  const movie = dataDetail as MovieDetailType;
 
   if (loadingDetail)
     return (
@@ -86,6 +85,8 @@ export default function MovieDetailPage() {
         <DetailPageSkeleton />
       </div>
     );
+
+  const movie = dataDetail as MovieDetailType;
 
   return (
     <div className="md:px-40 py-20 min-h-screen">
@@ -121,10 +122,10 @@ export default function MovieDetailPage() {
             alt={movie.title}
             layout="fill"
             objectFit="cover"
-            className="absolute z-10 w-full h-[211px]"
+            className=" w-full h-[211px]"
           />
 
-          <div className="absolute z-50 flex items-center gap-2 top-40 left-3">
+          <div className="absolute z-1 flex items-center gap-2 top-40 left-3">
             <Button
               onClick={() => fetchTrailer(movie.id)}
               className=" bg-[#FAFAFA] border border-none rounded-full size-10 py-2 px-4"
@@ -174,9 +175,9 @@ export default function MovieDetailPage() {
               alt={movie.title}
               layout="fill"
               objectFit="cover"
-              className="absolute z-10"
+              className="absolute"
             />
-            <div className="absolute z-50 flex items-center gap-2 top-90 left-8">
+            <div className="absolute z-1 flex items-center gap-2 top-90 left-8">
               <Button
                 onClick={() => fetchTrailer(movie.id)}
                 className=" bg-[#FAFAFA] border border-none rounded-full size-10 py-2 px-4"
@@ -231,6 +232,10 @@ export default function MovieDetailPage() {
           </div>
         </div>
         <hr className="text-[#E4E4E7]" />
+      </div>
+
+      <div>
+        <MoreLike movieId={Number(movieId)} />
       </div>
     </div>
   );

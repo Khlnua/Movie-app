@@ -43,7 +43,7 @@ const typesofmovies = () => {
           <div
             key={movie.id}
             className="shadow-md rounded-lg overflow-hidden flex flex-col gap-2 hover:opacity-75 cursor-pointer"
-            onClick={() => router.push(`/movie/${movie.id}`)}
+            onClick={() => router.push(`/detail/${movie.id}`)}
           >
             <img
               src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}

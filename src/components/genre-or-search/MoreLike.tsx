@@ -1,56 +1,47 @@
 "use client";
+
 import { useFetchDataInClient } from "@/hooks/useFetchDataFromTMDB";
 import { ArrowRight, Star } from "lucide-react";
-import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
-import { MoreLike } from "../genre-or-search/MoreLike";
+import { Button } from "../ui/button";
 
-type MoviesByListCategoryProps = {
-  movieType: "upcoming" | "popular" | "top_rated";
-};
-
-type MovieData = {
-  adult: boolean;
-  backdrop_path: string;
-  genre_ids: number[];
+type MovieDetailType = {
   id: number;
-  original_language: string;
-  original_title: string;
+  title: string;
   overview: string;
-  popularity: number;
+  backdrop_path: string;
+  runtime: number;
   poster_path: string;
   release_date: string;
-  title: string;
-  video: boolean;
   vote_average: number;
-  vote_count: number;
+  popularity: number;
+  genres: { id: number; name: string }[];
 };
 
-export const MoviesByListCategory = ({
-  movieType,
-}: MoviesByListCategoryProps) => {
-  const { data } = useFetchDataInClient(
-    `/movie/${movieType}?language=en-US&page=1`
-  );
-  const movies: MovieData[] = data?.results ?? [];
-
+export const MoreLike = ({ movieId }: { movieId: number }) => {
   const router = useRouter();
 
+  const { data: sameMoviesData } = useFetchDataInClient(
+    `/movie/${movieId}/similar?language=en-US&page=1`
+  );
+
+  const sameMovies: MovieDetailType[] = sameMoviesData?.results ?? [];
+  console.log(sameMovies);
+
   return (
-    <div className="flex flex-col px-5 md:px-20">
-      <div className="flex justify-between items-center">
-        <h1 className="text-lg py-9 font-extrabold">
-          {movieType.charAt(0).toUpperCase() + movieType.slice(1)}
-        </h1>
+    <div className="flex flex-col gap-5 px-5 md:px-0">
+      <div className="flex justify-between mt-10">
+        <p className="font-semibold text-2xl">More like this</p>
         <Button
-          onClick={() => router.push(`/typesofmovies?movieType=${movieType}`)}
-          className="font-medium text-sm"
+          className="flex justify-between"
+          onClick={() => router.push(`/samemovies?movieId=${movieId}`)}
         >
-          See more <ArrowRight />
+          <p>See more</p>
+          <ArrowRight />
         </Button>
       </div>
-      <div className="grid grid-cols-2 grid-rows-4 gap-5 md:grid-cols-5 md:grid-rows-2 md:gap-9 ">
-        {movies.slice(0, 10).map((movie: any) => (
+      <div className="grid grid-cols-2 grid-rows-3 gap-5 md:grid-cols-5 md:grid-rows-1 md:gap-9 ">
+        {sameMovies.slice(0, 5).map((movie: any) => (
           <div
             key={movie.id}
             onClick={() => router.push(`/detail/${movie.id}`)}

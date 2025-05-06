@@ -45,8 +45,6 @@ export const SearchInput = () => {
   );
   const movies: MovieSearchData[] = data?.results ?? [];
 
-  console.log(movies);
-
   const handleSearch = (event: any) => {
     setSearchValue(event.target.value);
 
@@ -64,7 +62,7 @@ export const SearchInput = () => {
 
   return (
     <div className="flex flex-col relative">
-      <div className="shadow-xs flex items-center px-3 gap-[10px] h-9 md:border rounded-lg border-[#E4E4E7] ">
+      <div className="shadow-xs flex items-center px-3 gap-[10px] h-9 md:border rounded-lg border-[#E4E4E7] bg-[#F4F4F5] dark:bg-[#27272A]">
         <Search className="size-4 text-[#71717A]  ml-2" />
         <Input
           value={searchValue}
