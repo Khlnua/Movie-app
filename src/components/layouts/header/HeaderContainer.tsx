@@ -14,7 +14,7 @@ export const HeaderContainer = () => {
       <div className="flex items-center md:justify-between py-[7.5px] md:py-[11.5px] px-5 md:px-20 relative">
         <MovieZLogo />
 
-        {pathname === "./search" ? (
+        {pathname === "/search" ? (
           <SearchForSearchPage />
         ) : (
           <SearchForOtherPage />

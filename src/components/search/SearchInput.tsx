@@ -1,27 +1,22 @@
 "use client";
 import { ArrowRight, Search, Star } from "lucide-react";
 import { Input } from "../ui/input";
-import { useState, useRef, useEffect } from "react";
-import { useFetchDataInClient } from "@/hooks/useFetchDataFromTMDB";
+import { useEffect } from "react";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
-
-type MovieSearchData = {
-  genre_ids: string[];
-  id: number;
-  poster_path: string;
-  release_date: string;
-  title: string;
-  vote_average: number;
-};
+import { useMoviesBySearch } from "@/hooks/useMoviesBySearch";
 
 export const SearchInput = () => {
   const router = useRouter();
 
-  const [searchValue, setSearchValue] = useState<string>("");
-  const [moviesResult, setMoviesResult] = useState<any[]>([]);
-
-  const searchResultRef = useRef<HTMLDivElement | null>(null);
+  const {
+    searchResultRef,
+    setSearchValue,
+    searchValue,
+    handleSearch,
+    movies,
+    onClickFoundMovie,
+  } = useMoviesBySearch();
 
   useEffect(() => {
     const handleRefClick = (event: MouseEvent) => {
@@ -39,26 +34,6 @@ export const SearchInput = () => {
       window.removeEventListener("mousedown", handleRefClick);
     };
   }, []);
-
-  const { data } = useFetchDataInClient(
-    `/search/movie?query=${searchValue}&language=en-US&page=1`
-  );
-  const movies: MovieSearchData[] = data?.results ?? [];
-
-  const handleSearch = (event: any) => {
-    setSearchValue(event.target.value);
-
-    const findMovies = movies.filter((movie: any) => {
-      movie.title.toLowerCase().startsWith(searchValue.toLocaleLowerCase());
-    });
-
-    setMoviesResult(findMovies);
-  };
-
-  const onClickFoundMovie = (movieId: string) => () => {
-    setSearchValue("");
-    router.push(`/detail/${movieId}`);
-  };
 
   return (
     <div className="flex flex-col relative">
@@ -127,8 +102,8 @@ export const SearchInput = () => {
               </li>
             ))}
           </ul>
-          <Button>
-            See all results for{" "}
+          <Button onClick={() => router.push(`/search?query=${searchValue}`)}>
+            See all results for
             <span className="font-semibold">
               "{searchValue.toLocaleUpperCase()}"
             </span>
