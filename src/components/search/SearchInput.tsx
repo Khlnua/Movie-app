@@ -5,6 +5,17 @@ import { useEffect } from "react";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { useMoviesBySearch } from "@/hooks/useMoviesBySearch";
+import Image from "next/image";
+import { px } from "framer-motion";
+
+type MovieData = {
+  genre_ids: string[];
+  id: string;
+  poster_path: string;
+  release_date: string;
+  title: string;
+  vote_average: number;
+};
 
 export const SearchInput = () => {
   const router = useRouter();
@@ -46,68 +57,82 @@ export const SearchInput = () => {
         />
       </div>
 
-      {searchValue && Boolean(movies.length) && (
+      {searchValue && (
         <div
           ref={searchResultRef}
           className="absolute z-110 top-10 -left-15  bg-[#F4F4F5] dark:bg-[#27272A] w-[335px] md:w-[577px] md:left-[-150px] p-3 rounded-lg"
         >
-          <ul className="flex flex-col gap-3 md:w-[553px] items-start">
-            {movies.slice(0, 5).map((movie: any, index: any) => (
-              <li
-                onClick={onClickFoundMovie(movie.id)}
-                className="flex justify-center cursor-pointer hover:bg-gray-200 hover:dark:bg-slate-900 transition duration-300 rounded-sm py-1"
-                key={index}
-              >
-                <div className="flex flex-col gap-1 pl-3">
-                  <div className="flex gap-3 md:gap-8">
-                    <img
-                      src={`http://image.tmdb.org/t/p/original/${movie.poster_path}`}
-                      alt={movie.title}
-                      className="h-25 w-[67px] rounded-md"
-                    />
-                    <div>
-                      <div className="flex flex-col gap-1.5">
-                        <p className="text-[20px] font-semibold">
-                          {movie.title}
-                        </p>
-                        <div className="flex items-center ">
-                          <Star
-                            size={14}
-                            className="text-[#FDE047] fill-[#FDE047] dark:text-[#F4F4F5] dark:fill-[#F4F4F5]"
-                          />
-                          <span className="font-medium text-sm">
-                            {movie.vote_average.toFixed(1)}
-                            <span className="font-normal text-gray-400">
-                              /10
-                            </span>
-                          </span>
+          {movies.length === 0 ? (
+            <div className="flex justify-center items-center">
+              No results found.
+            </div>
+          ) : (
+            <div>
+              <ul className="flex flex-col gap-3 md:w-[553px] items-start">
+                {movies.slice(0, 5).map((movie: MovieData, index: number) => (
+                  <li
+                    onClick={onClickFoundMovie(movie.id)}
+                    className="flex justify-center cursor-pointer hover:bg-gray-200 hover:dark:bg-slate-900 transition duration-300 rounded-sm py-1"
+                    key={index}
+                  >
+                    <div className="flex flex-col gap-1 pl-3">
+                      <div className="flex gap-3 md:gap-8">
+                        <Image
+                          src={`http://image.tmdb.org/t/p/original/${movie.poster_path}`}
+                          alt={movie.title}
+                          width={67}
+                          height={100}
+                          className="rounded-md"
+                        />
+                        <div>
+                          <div className="flex flex-col gap-1.5">
+                            <p className="text-[20px] font-semibold">
+                              {movie.title}
+                            </p>
+                            <div className="flex items-center ">
+                              <Star
+                                size={14}
+                                className="text-[#FDE047] fill-[#FDE047] dark:text-[#F4F4F5] dark:fill-[#F4F4F5]"
+                              />
+                              <span className="font-medium text-sm">
+                                {movie.vote_average.toFixed(1)}
+                                <span className="font-normal text-gray-400">
+                                  /10
+                                </span>
+                              </span>
+                            </div>
+                          </div>
+                          <div className="flex justify-between items-center gap-16 md:gap-75 ">
+                            <p className="font-medium text-sm">
+                              {movie.release_date.slice(0, 4)}
+                            </p>
+                            <Button
+                              onClick={() => router.push(`/detail/${movie.id}`)}
+                              className="flex gap-2"
+                            >
+                              <p className="font-medium text-sm"> See more</p>
+                              <ArrowRight size={16} />
+                            </Button>
+                          </div>
                         </div>
                       </div>
-                      <div className="flex justify-between items-center gap-16 md:gap-75 ">
-                        <p className="font-medium text-sm">
-                          {movie.release_date.slice(0, 4)}
-                        </p>
-                        <Button
-                          onClick={() => router.push(`/detail/${movie.id}`)}
-                          className="flex gap-2"
-                        >
-                          <p className="font-medium text-sm"> See more</p>
-                          <ArrowRight size={16} />
-                        </Button>
-                      </div>
+                      <hr className="text-[#E4E4E7]" />
                     </div>
-                  </div>
-                  <hr className="text-[#E4E4E7]" />
-                </div>
-              </li>
-            ))}
-          </ul>
-          <Button onClick={() => router.push(`/search?query=${searchValue}`)}>
-            See all results for
-            <span className="font-semibold">
-              "{searchValue.toLocaleUpperCase()}"
-            </span>
-          </Button>
+                  </li>
+                ))}
+              </ul>
+              <Button
+                onClick={() =>
+                  router.push(`/search?searchValue=${searchValue}`)
+                }
+              >
+                See all results for
+                <span className="font-semibold">
+                  "{searchValue.toLocaleUpperCase()}"
+                </span>
+              </Button>
+            </div>
+          )}
         </div>
       )}
     </div>

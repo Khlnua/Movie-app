@@ -14,11 +14,10 @@ export const SearchForSearchPage = () => {
     setShowSearchBarMobile(!showSearchBarMobile);
   };
   return (
-    <div className="flex flex-1 md:flex-0 items-center gap-x-3 bg-pink-300">
+    <div className="flex flex-1 md:flex-0 items-center gap-x-3">
       <div className="items-center gap-x-3 hidden lg:flex  ">
         <AllMoviesGenres />
         <SearchInputForSearch />
-        {/* <SearchInput />       for search page */}
       </div>
 
       <Button
@@ -39,7 +38,6 @@ export const SearchForSearchPage = () => {
           >
             <AllMoviesGenres />
             <SearchInputForSearch />
-            {/* <SearchInput /> change       */}
             <Button
               onClick={handleSearchButton}
               className="rounded-md shadow-xs border border-[#E4E4E7]"

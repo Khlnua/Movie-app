@@ -13,6 +13,7 @@ import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
 import { Trailer } from "./Trailer";
 import { HomePageSkeleton } from "../skeletons/HomePageSkeleton";
+import Image from "next/image";
 
 type Nowplaying = {
   adult: boolean;
@@ -101,11 +102,14 @@ export const NowPlayings = () => {
               key={movie.id}
               className="w-full h-[510px] md:h-165 flex shrink-0"
             >
-              <img
-                src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
-                alt={movie.title}
-                className=" absolute w-full  h-60 md:h-165 object-cover"
-              />
+              <div className=" absolute w-full  h-60 md:h-165 object-cover">
+                <Image
+                  src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
+                  alt={movie.title}
+                  fill
+                  className=" absolute w-full  h-60 md:h-165 object-cover"
+                />
+              </div>
 
               <div className="absolute z-1 top-60 md:top-40 md:pl-20  w-full md:w-101 flex justify-between flex-col p-5 gap-4">
                 <div className="  md:text-[#FFFFFF] flex justify-between items-center md:flex-col md:items-start">

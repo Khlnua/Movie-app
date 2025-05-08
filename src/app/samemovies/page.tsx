@@ -4,6 +4,7 @@ import { useFetchDataInClient } from "@/hooks/useFetchDataFromTMDB";
 import { Star } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { DynamicPagination } from "@/components/common";
+import Image from "next/image";
 
 type MovieDetailType = {
   id: number;
@@ -13,6 +14,7 @@ type MovieDetailType = {
   runtime: number;
   poster_path: string;
   release_date: string;
+  original_title: string;
   vote_average: number;
   popularity: number;
   genres: { id: number; name: string }[];
@@ -37,17 +39,21 @@ const samemovies = () => {
         <p className="font-semibold text-2xl">More like this</p>
       </div>
       <div className="grid grid-cols-2 grid-rows-5 gap-5 md:grid-cols-5 md:grid-rows-2 md:gap-9 ">
-        {sameMovies.slice(0, 10).map((movie: any) => (
+        {sameMovies.slice(0, 10).map((movie: MovieDetailType) => (
           <div
             key={movie.id}
             onClick={() => router.push(`/detail/${movie.id}`)}
             className=" bg-[#F4F4F5] dark:bg-[#27272A] rounded-lg"
           >
-            <img
-              className="rounded-t-lg cursor-pointer h-80  md:h-100 w-full hover:opacity-70 "
-              src={`http://image.tmdb.org/t/p/original/${movie.poster_path}`}
-              alt={movie.original_title}
-            />
+            <div className="cursor-pointer h-80  md:h-100 w-full hover:opacity-70 relative">
+              <Image
+                src={`http://image.tmdb.org/t/p/original/${movie.poster_path}`}
+                alt={movie.original_title}
+                fill
+                className="rounded-t-lg  "
+              />
+            </div>
+
             <div className="  py-4 pl-3 ">
               <div className="flex ">
                 <Star className="text-[#FDE047] fill-[#FDE047] dark:text-[#F4F4F5] dark:fill-[#F4F4F5]" />

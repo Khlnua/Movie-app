@@ -4,6 +4,7 @@ import { useFetchDataInClient } from "@/hooks/useFetchDataFromTMDB";
 import { ArrowRight, Star } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
+import Image from "next/image";
 
 type MovieDetailType = {
   id: number;
@@ -41,17 +42,20 @@ export const MoreLike = ({ movieId }: { movieId: number }) => {
         </Button>
       </div>
       <div className="grid grid-cols-2 grid-rows-3 gap-5 md:grid-cols-5 md:grid-rows-1 md:gap-9 ">
-        {sameMovies.slice(0, 5).map((movie: any) => (
+        {sameMovies.slice(0, 5).map((movie: MovieDetailType) => (
           <div
             key={movie.id}
             onClick={() => router.push(`/detail/${movie.id}`)}
             className=" bg-[#F4F4F5] dark:bg-[#27272A] rounded-lg"
           >
-            <img
-              className="rounded-t-lg cursor-pointer h-80  md:h-100 w-full hover:opacity-70 "
-              src={`http://image.tmdb.org/t/p/original/${movie.poster_path}`}
-              alt={movie.title}
-            />
+            <div className="rounded-t-lg cursor-pointer h-80  md:h-100 w-full hover:opacity-70 relative ">
+              <Image
+                className="rounded-t-lg cursor-pointer h-80  md:h-100 w-full hover:opacity-70 "
+                src={`http://image.tmdb.org/t/p/original/${movie.poster_path}`}
+                fill
+                alt={movie.title}
+              />
+            </div>
             <div className="  py-4 pl-3 ">
               <div className="flex ">
                 <Star className="text-[#FDE047] fill-[#FDE047] dark:text-[#F4F4F5] dark:fill-[#F4F4F5]" />

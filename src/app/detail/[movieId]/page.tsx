@@ -27,6 +27,14 @@ type VideoType = {
   site: string;
   type: string;
 };
+type CrewMemberType = {
+  job: string;
+  name: string;
+};
+
+type CastMemberType = {
+  name: string;
+};
 
 export default function MovieDetailPage() {
   const [trailerkey, setTrailerKey] = useState<string | null>(null);
@@ -39,18 +47,18 @@ export default function MovieDetailPage() {
   );
 
   const director = crewData?.crew?.find(
-    (crewMember: any) => crewMember.job === "Director"
+    (crewMember: CrewMemberType) => crewMember.job === "Director"
   );
   const directordata = director?.name || "Unknown";
 
-  const writer = crewData?.crew?.filter((crewMember: any) =>
+  const writer = crewData?.crew?.filter((crewMember: CrewMemberType) =>
     ["Writer", "Screenplay", "Story"].includes(crewMember.job)
   );
   const writersdata =
-    writer?.slice(0, 3).map((writer: any) => writer.name) || [];
+    writer?.slice(0, 3).map((writer: CrewMemberType) => writer.name) || [];
 
   const actors = crewData?.cast?.slice(0, 5) || [];
-  const actorsdata = actors.map((actor: any) => ({
+  const actorsdata = actors.map((actor: CastMemberType) => ({
     name: actor.name,
   }));
 
@@ -138,10 +146,11 @@ export default function MovieDetailPage() {
         </div>
 
         <div className=" flex px-5 pt-5">
-          <img
+          <Image
             src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
             alt={movie.title}
-            className=" w-25 h-37 "
+            width={100}
+            height={128}
           />
 
           <div className="flex flex-col gap-5 pl-6 pr-3">
@@ -163,10 +172,11 @@ export default function MovieDetailPage() {
 
       <div className="hidden md:flex flex-col">
         <div className="flex gap-8 justify-center">
-          <img
+          <Image
             src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
             alt={movie.title}
-            className=" w-72.5 h-107 "
+            width={300}
+            height={428}
           />
 
           <div className="relative  w-190 h-107 ">
@@ -225,7 +235,11 @@ export default function MovieDetailPage() {
           <div className="font-bold text-[16px] w-16 h-7">Stars</div>
           <div className="flex">
             {actorsdata.length > 0 ? (
-              <p>{actorsdata.map((actor: any) => actor.name).join(", ")}</p>
+              <p>
+                {actorsdata
+                  .map((actor: CastMemberType) => actor.name)
+                  .join(", ")}
+              </p>
             ) : (
               <p>No actors available</p>
             )}

@@ -1,3 +1,5 @@
+"use client";
+
 import useSWR from "swr";
 import { fetchMovieData } from "@/utils/fetch-movie-data";
 

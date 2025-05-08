@@ -5,7 +5,8 @@ import { useURLSearchParams } from "@/hooks/useURLSearchParams";
 import { cn } from "@/lib/utils";
 import { ChevronRight, Star, X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { DynamicPagination } from "../common";
+import { DynamicPagination, NoResultsFound } from "../common";
+import Image from "next/image";
 
 type MoviesByGenreProps = {
   position: string;
@@ -41,11 +42,6 @@ export const MoviesByGenre = ({
   const { push } = useRouter();
   const { selectedGenreIds, generateQueryParams } = useURLSearchParams();
 
-  const handleGenreSelection = (genreId: string) => () => {
-    const newPath = generateQueryParams(genreId);
-    push(newPath);
-  };
-
   const { isLoading: genreLoad, data: dataGenres } = useFetchDataInClient(
     "/genre/movie/list?language=en"
   );
@@ -57,6 +53,11 @@ export const MoviesByGenre = ({
   const movies: MovieData[] = dataMovies?.results ?? [];
   const totalPage = dataMovies?.total_pages;
 
+  const handleGenreSelection = (genreId: string) => () => {
+    const newPath = generateQueryParams(genreId);
+    push(newPath);
+  };
+
   if (genreLoad) {
     return <GenresLoading />;
   }
@@ -64,8 +65,6 @@ export const MoviesByGenre = ({
   if (!genres.length) {
     return null;
   }
-
-  const router = useRouter();
 
   return (
     <div className={cn("md:flex md:px-10", position)}>
@@ -101,37 +100,44 @@ export const MoviesByGenre = ({
           })}
         </div>
       </div>
-      <div>
-        <p>{selectedGenreIds}</p>
-        <div className="grid grid-cols-2 grid-rows-6 gap-5 md:grid-cols-4 md:grid-rows-3 md:gap-9 px-3 md:px-10 ">
-          {movies.slice(0, 12).map((movie: any) => (
-            <div
-              key={movie.id}
-              onClick={() => router.push(`/detail/${movie.id}`)}
-              className=" bg-[#F4F4F5] dark:bg-[#27272A] rounded-lg"
-            >
-              <img
-                className="rounded-t-lg cursor-pointer h-61 md:70 w-full hover:opacity-70 "
-                src={`http://image.tmdb.org/t/p/original/${movie.poster_path}`}
-                alt={movie.title}
-              />
-              <div className="  py-4 pl-3 ">
-                <div className="flex ">
-                  <Star className="text-[#FDE047] fill-[#FDE047] dark:text-[#F4F4F5] dark:fill-[#F4F4F5]" />
-                  <span className="font-semibold">
-                    {movie.vote_average.toFixed(1)}
-                    <span className="font-normal text-gray-400">/10</span>
-                  </span>
+      {movies.length === 0 ? (
+        <NoResultsFound />
+      ) : (
+        <div>
+          <p>{selectedGenreIds}</p>
+          <div className="grid grid-cols-2 grid-rows-6 gap-5 md:grid-cols-4 md:grid-rows-3 md:gap-9 px-3 md:px-10 ">
+            {movies.slice(0, 12).map((movie: MovieData) => (
+              <div
+                key={movie.id}
+                onClick={() => push(`/detail/${movie.id}`)}
+                className=" bg-[#F4F4F5] dark:bg-[#27272A] rounded-lg"
+              >
+                <div className="rounded-t-lg cursor-pointer h-80  md:h-100 w-full hover:opacity-70 relative ">
+                  <Image
+                    className="rounded-t-lg cursor-pointer h-80  md:h-100 w-full hover:opacity-70 "
+                    src={`http://image.tmdb.org/t/p/original/${movie.poster_path}`}
+                    fill
+                    alt={movie.title}
+                  />
                 </div>
-                <p className="text-[18px] font-normal">{movie.title}</p>
+                <div className="  py-4 pl-3 ">
+                  <div className="flex ">
+                    <Star className="text-[#FDE047] fill-[#FDE047] dark:text-[#F4F4F5] dark:fill-[#F4F4F5]" />
+                    <span className="font-semibold">
+                      {movie.vote_average.toFixed(1)}
+                      <span className="font-normal text-gray-400">/10</span>
+                    </span>
+                  </div>
+                  <p className="text-[18px] font-normal">{movie.title}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          <div className="pt-10 ">
+            <DynamicPagination totalPage={Number(totalPage)} />
+          </div>
         </div>
-        <div className="pt-10 ">
-          <DynamicPagination totalPage={Number(totalPage)} />
-        </div>
-      </div>
+      )}
     </div>
   );
 };
