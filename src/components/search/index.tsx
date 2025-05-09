@@ -1,10 +1,7 @@
-import React from "react";
 import { SearchForOtherPage } from "./SearchForOtherPage";
 import { SearchForSearchPage } from "./SearchForSearchPage";
 import { SearchInput } from "./SearchInput";
-import { SearchNoResultsFound } from "./SearchNoResultsFound";
-import { SearchResultCard } from "./SearchResultCard";
-import { SearchResultList } from "./SearchResultList";
+import { SearchInputForSearch } from "./SearchInputForSearch";
 
 export const Search = () => {
   return (
@@ -12,9 +9,7 @@ export const Search = () => {
       <SearchForOtherPage />
       <SearchForSearchPage />
       <SearchInput />
-      <SearchNoResultsFound />
-      <SearchResultCard />
-      <SearchResultList />
+      <SearchInputForSearch />
     </div>
   );
 };
