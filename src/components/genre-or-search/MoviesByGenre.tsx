@@ -104,7 +104,6 @@ export const MoviesByGenre = ({
         <NoResultsFound />
       ) : (
         <div>
-          <p>{selectedGenreIds}</p>
           <div className="grid grid-cols-2 grid-rows-6 gap-5 md:grid-cols-4 md:grid-rows-3 md:gap-9 px-3 md:px-10 ">
             {movies.slice(0, 12).map((movie: MovieData) => (
               <div
