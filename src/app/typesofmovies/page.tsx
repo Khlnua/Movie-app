@@ -22,7 +22,7 @@ type MovieDetailType = {
   popularity: number;
   genres: { id: number; name: string }[];
 };
-const typesofmovies = () => {
+const Typesofmovies = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -85,4 +85,4 @@ const typesofmovies = () => {
   );
 };
 
-export default typesofmovies;
+export default Typesofmovies;

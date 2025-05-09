@@ -36,7 +36,7 @@ type CastMemberType = {
   name: string;
 };
 
-export default function MovieDetailPage() {
+const MovieDetailPage = () => {
   const [trailerkey, setTrailerKey] = useState<string | null>(null);
 
   const params = useParams();
@@ -253,4 +253,6 @@ export default function MovieDetailPage() {
       </div>
     </div>
   );
-}
+};
+
+export default MovieDetailPage;

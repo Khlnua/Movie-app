@@ -19,8 +19,8 @@ type MovieDetailType = {
   popularity: number;
   genres: { id: number; name: string }[];
 };
-const samemovies = () => {
-  const router = useRouter();
+const Samemovies = () => {
+  const { push } = useRouter();
   const searchParams = useSearchParams();
   const page = Number(searchParams.get("page") ?? 1);
   const movieId = Number(searchParams.get("movieId") ?? 1);
@@ -42,7 +42,7 @@ const samemovies = () => {
         {sameMovies.slice(0, 10).map((movie: MovieDetailType) => (
           <div
             key={movie.id}
-            onClick={() => router.push(`/detail/${movie.id}`)}
+            onClick={() => push(`/detail/${movie.id}`)}
             className=" bg-[#F4F4F5] dark:bg-[#27272A] rounded-lg"
           >
             <div className="cursor-pointer h-80  md:h-100 w-full hover:opacity-70 relative">
@@ -73,4 +73,4 @@ const samemovies = () => {
   );
 };
 
-export default samemovies;
+export default Samemovies;

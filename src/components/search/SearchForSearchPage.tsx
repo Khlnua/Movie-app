@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { SearchInput } from "./SearchInput";
 import { AllMoviesGenres } from "../genre/AllMoviesGenres";
 import { Button } from "../ui/button";
 import { Search, X } from "lucide-react";

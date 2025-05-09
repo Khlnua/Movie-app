@@ -7,7 +7,7 @@ const usePagination = (totalPage: number) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const maxButton = 3;
+  let maxButton = 3;
   const pageLimit = Math.min(totalPage, 10);
   const currentPage = searchParams.get("page") ?? 1;
   const currentPageAsNumber = Number(currentPage);
@@ -36,6 +36,9 @@ const usePagination = (totalPage: number) => {
   if (end > pageLimit) {
     end = pageLimit;
     start = end - maxButton + 1;
+  }
+  if (end === 1 && start === 1) {
+    maxButton = 1;
   }
 
   const displayButtons = Array.from(

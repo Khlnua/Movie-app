@@ -45,6 +45,9 @@ const SearchPage = () => {
   const movies: MovieDetailType[] = data?.results ?? [];
   const genres: GenreTypes[] = dataGenres?.genres ?? [];
   const totalPage = data?.total_pages;
+  const totalResult = data?.total_results;
+
+  console.log(totalResult);
 
   const filteredMovies = movies.filter((movie: MovieDetailType) => {
     if (selectedGenresId.length === 0) return true;
@@ -61,6 +64,14 @@ const SearchPage = () => {
     );
   };
 
+  let movienum = 0;
+
+  if (selectedGenresId.length === 0) {
+    movienum = totalResult;
+  } else {
+    movienum = filteredMovies.length;
+  }
+
   return (
     <div className="px-5 md:px-30 pt-15 md:pt-30 flex flex-col gap-10">
       <p className="font-semibold text-3xl">Search Results</p>
@@ -68,7 +79,7 @@ const SearchPage = () => {
       <div className="flex gap-3 flex-col md:flex-row">
         <div className="flex flex-col gap-5">
           <p className="font-semibold text-[20px]">
-            {filteredMovies.length} results for "{searchValue}"
+            {movienum} results for "{searchValue}"
           </p>
 
           {filteredMovies.length === 0 ? (

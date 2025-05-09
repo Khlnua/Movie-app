@@ -3,7 +3,6 @@ import { useFetchDataInClient } from "@/hooks/useFetchDataFromTMDB";
 import { ArrowRight, Star } from "lucide-react";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
-import { MoreLike } from "../genre-or-search/MoreLike";
 import Image from "next/image";
 
 type MoviesByListCategoryProps = {

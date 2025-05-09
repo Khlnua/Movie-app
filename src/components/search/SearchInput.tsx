@@ -6,11 +6,10 @@ import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { useMoviesBySearch } from "@/hooks/useMoviesBySearch";
 import Image from "next/image";
-import { px } from "framer-motion";
 
 type MovieData = {
-  genre_ids: string[];
   id: string;
+  genre_ids: string[];
   poster_path: string;
   release_date: string;
   title: string;
@@ -128,7 +127,7 @@ export const SearchInput = () => {
               >
                 See all results for
                 <span className="font-semibold">
-                  "{searchValue.toLocaleUpperCase()}"
+                  {`"${searchValue.toLocaleUpperCase()}"`}
                 </span>
               </Button>
             </div>
