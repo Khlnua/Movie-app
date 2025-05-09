@@ -79,7 +79,7 @@ const SearchPage = () => {
       <div className="flex gap-3 flex-col md:flex-row">
         <div className="flex flex-col gap-5">
           <p className="font-semibold text-[20px]">
-            {movienum} results for "{searchValue}"
+            {`"${movienum}"`} results for {`"${searchValue}"`}
           </p>
 
           {filteredMovies.length === 0 ? (
